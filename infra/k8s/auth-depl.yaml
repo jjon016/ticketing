@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: fadeleafj/auth
+          image: us.gcr.io/ticketing-dev-315515/auth
 ---
 apiVersion: v1
 kind: Service
@@ -27,4 +27,4 @@ spec:
     - name: auth
       protocol: TCP
       port: 3000
-      targetPort: 3000          
+      targetPort: 3000
