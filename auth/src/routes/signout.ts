@@ -1,9 +1,9 @@
-import express from 'express';
+import express, { Router } from 'express';
 
 const router = express.Router();
 
 router.post('/api/users/signout',(req,res)=>{
-  res.send('Hi therre!');
+  res.send('Hi there from sign out');
 });
 
-export { router as signoutRouter };
+export {router as signoutRouter}
