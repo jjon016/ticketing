@@ -1,1 +1,2 @@
 npm install express-validator
+npm install express-async-errors
