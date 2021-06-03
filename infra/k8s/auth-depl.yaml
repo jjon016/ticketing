@@ -15,6 +15,12 @@ spec:
       containers:
         - name: auth
           image: fadeleafj/auth
+          env:
+            - name: JWTKEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWTKEY
 ---
 apiVersion: v1
 kind: Service
