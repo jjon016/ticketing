@@ -1,8 +1,7 @@
 import express, { Router, Request, Response } from 'express';
 import { body } from 'express-validator';
-import { validateRequest } from '../middlewares/validaterequest';
+import { validateRequest, BadRequestError } from '@fadecoding/common';
 import { User } from '../models/user';
-import { BadRequestError } from '../errors/badrequesterror';
 import { Password } from '../tools/password';
 import jwt from 'jsonwebtoken';
 

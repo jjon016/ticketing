@@ -1,5 +1,5 @@
 import express, { Router } from 'express';
-import { currentUser } from '../middlewares/currentuser';
+import { currentUser } from '@fadecoding/common';
 
 const router = express.Router();
 

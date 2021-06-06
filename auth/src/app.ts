@@ -7,8 +7,7 @@ import { currentUserRouter } from './routes/currentuser';
 import { signinRouter } from './routes/signin';
 import { signupRouter } from './routes/signup';
 import { signoutRouter } from './routes/signout';
-import { errorHandler } from './middlewares/errorhandler';
-import { NotFoundError } from './errors/notfounderror';
+import { errorHandler, NotFoundError } from '@fadecoding/common';
 
 const app = express();
 app.set('trust proxy', true);
