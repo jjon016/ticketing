@@ -1,0 +1,3 @@
+npm install node-nats-streaming ts-node-dev typescript @types/node
+
+kubectl port-forward [podname] 4222:4222
