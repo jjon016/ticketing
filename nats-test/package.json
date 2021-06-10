@@ -4,6 +4,7 @@
   "description": "Test app to talk to nats",
   "main": "index.js",
   "dependencies": {
+    "@fadecoding/common": "^1.0.6",
     "@types/node": "^15.12.2",
     "node-nats-streaming": "^0.3.2",
     "ts-node-dev": "^1.1.6",

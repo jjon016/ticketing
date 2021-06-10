@@ -6,7 +6,9 @@ import {
   NotFoundError,
   ForbiddenError,
 } from '@fadecoding/common';
+import { TicketUpdatedPublisher } from '../events/publisher/ticket-updated-publisher';
 import { Ticket } from '../models/ticket';
+import { natsWrapper } from '../nats-wrapper';
 
 const router = express.Router();
 
@@ -35,6 +37,13 @@ router.put(
       price: req.body.price,
     });
     await ticket.save();
+
+    new TicketUpdatedPublisher(natsWrapper.client).publish({
+      id: ticket.id,
+      title: ticket.title,
+      userId: ticket.userId,
+      price: ticket.price,
+    });
 
     res.send(ticket);
   }
