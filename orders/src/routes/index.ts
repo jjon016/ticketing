@@ -1,5 +1,5 @@
 import express, { Request, Response } from 'express';
-import { currentUser, requireAuth } from '@fadecoding/common';
+import { requireAuth } from '@fadecoding/common';
 import { Order } from '../models/order';
 
 const router = express.Router();
