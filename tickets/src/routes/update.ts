@@ -4,7 +4,7 @@ import {
   requireAuth,
   validateRequest,
   NotFoundError,
-  ForbiddenError,
+  NotAuthorizedError,
 } from '@fadecoding/common';
 import { TicketUpdatedPublisher } from '../events/publisher/ticket-updated-publisher';
 import { Ticket } from '../models/ticket';
@@ -29,7 +29,7 @@ router.put(
     }
 
     if (ticket.userId !== req.currentUser!.id) {
-      throw new ForbiddenError();
+      throw new NotAuthorizedError();
     }
 
     ticket.set({
@@ -40,6 +40,7 @@ router.put(
 
     new TicketUpdatedPublisher(natsWrapper.client).publish({
       id: ticket.id,
+      version: ticket.version,
       title: ticket.title,
       userId: ticket.userId,
       price: ticket.price,

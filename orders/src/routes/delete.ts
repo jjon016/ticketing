@@ -1,5 +1,9 @@
 import express, { Request, Response } from 'express';
-import { ForbiddenError, NotFoundError, requireAuth } from '@fadecoding/common';
+import {
+  NotAuthorizedError,
+  NotFoundError,
+  requireAuth,
+} from '@fadecoding/common';
 import { Order, OrderStatus } from '../models/order';
 import { OrderCancelledPublisher } from '../events/publishers/order-cancelled-publisher';
 import { natsWrapper } from '../nats-wrapper';
@@ -17,7 +21,7 @@ router.delete(
     }
 
     if (order.userId !== req.currentUser!.id) {
-      throw new ForbiddenError();
+      throw new NotAuthorizedError();
     }
 
     order.status = OrderStatus.Cancelled;
@@ -26,6 +30,7 @@ router.delete(
     //publish order deleted event
     new OrderCancelledPublisher(natsWrapper.client).publish({
       id: order.id,
+      version: order.version,
       ticket: {
         id: order.ticket.id,
       },

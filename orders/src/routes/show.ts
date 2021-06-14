@@ -1,5 +1,9 @@
 import express, { Request, Response } from 'express';
-import { ForbiddenError, NotFoundError, requireAuth } from '@fadecoding/common';
+import {
+  NotAuthorizedError,
+  NotFoundError,
+  requireAuth,
+} from '@fadecoding/common';
 import { Order } from '../models/order';
 
 const router = express.Router();
@@ -15,7 +19,7 @@ router.get(
     }
 
     if (order.userId !== req.currentUser!.id) {
-      throw new ForbiddenError();
+      throw new NotAuthorizedError();
     }
 
     res.send(order);
