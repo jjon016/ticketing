@@ -5,6 +5,7 @@ import {
   validateRequest,
   NotFoundError,
   NotAuthorizedError,
+  BadRequestError,
 } from '@fadecoding/common';
 import { TicketUpdatedPublisher } from '../events/publisher/ticket-updated-publisher';
 import { Ticket } from '../models/ticket';
@@ -26,6 +27,11 @@ router.put(
     const ticket = await Ticket.findById(req.params.id);
     if (!ticket) {
       throw new NotFoundError();
+    }
+
+    if (ticket.orderId) {
+      //ticket reserved, throw an error
+      throw new BadRequestError('Cannot edit a reserved ticket');
     }
 
     if (ticket.userId !== req.currentUser!.id) {

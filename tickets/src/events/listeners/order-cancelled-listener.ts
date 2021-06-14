@@ -1,13 +1,14 @@
 import { Message } from 'node-nats-streaming';
 import { Ticket } from '../../models/ticket';
-import { Listener, OrderCreatedEvent, Subjects } from '@fadecoding/common';
+import { Listener, OrderCancelledEvent, Subjects } from '@fadecoding/common';
 import { queueGroupName } from './queue-group-name';
 import { TicketUpdatedPublisher } from '../publisher/ticket-updated-publisher';
 
-export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
-  subject: Subjects.OrderCreated = Subjects.OrderCreated;
+export class OrderCancelledListener extends Listener<OrderCancelledEvent> {
+  subject: Subjects.OrderCancelled = Subjects.OrderCancelled;
   queueGroupName = queueGroupName;
-  async onMessage(data: OrderCreatedEvent['data'], msg: Message) {
+
+  async onMessage(data: OrderCancelledEvent['data'], msg: Message) {
     //find ticket that matches ticket id in the order
     const ticket = await Ticket.findById(data.ticket.id);
 
@@ -17,7 +18,7 @@ export class OrderCreatedListener extends Listener<OrderCreatedEvent> {
     }
 
     //if found then mark order id on ticket
-    ticket.set({ orderId: data.id });
+    ticket.set({ orderId: undefined });
     await ticket.save();
 
     await new TicketUpdatedPublisher(this.client).publish({
