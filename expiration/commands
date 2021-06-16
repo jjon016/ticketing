@@ -1,0 +1,3 @@
+npm install bull @trypes/bull
+docker build -t fadeleafj/expiration .
+docker push fadeleafj/expiration
