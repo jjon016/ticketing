@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: payments
+  template:
+    metadata:
+      labels:
+        app: payments
+    spec:
+      containers:
+        - name: payments
+          image: fadeleafj/payments
+          env:
+            - name: NATSURL
+              value: 'http://nats-srv:4222'
+            - name: NATSCLUSTERID
+              value: 'ticketing'
+            - name: NATSCLIENTID
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: MONGOURI
+              value: 'mongodb://payments-mongo-srv:27017/payments'
+            - name: JWTKEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWTKEY
+            - name: STRIPE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secret
+                  key: STRIPE_KEY
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: payments-srv
+spec:
+  selector:
+    app: payments
+  ports:
+    - name: payments
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
