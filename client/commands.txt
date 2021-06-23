@@ -1,2 +1,3 @@
 npm install react react-dom next
 npm install axios
+npm install react-stripe-checkout
